@@ -1,13 +1,16 @@
 # README
-## This is the README for your extension "calc"
-You can author your README using Visual Studio Code.  Here are some useful editor keyboard shortcuts:
+## Calculator extension for Visual Studio Code 
+With this extension, you can use [Visual Studio Code] (https://code.visualstudio.com/) as your calculator.
+Just type a math expression in a text document, and once = key is pressed, the result will automatically appear.
+For example, type this in a document:
 
-* Split the editor (`Cmd+\` on OSX or `Ctrl+\` on Windows and Linux)
-* Toggle preview (`Shift+CMD+V` on OSX or `Shift+Ctrl+V` on Windows and Linux)
-* Press `Ctrl+Space` (Windows, Linux) or `Cmd+Space` (OSX) to see a list of Markdown snippets
+    My monthly salary: 20*160=
 
-### For more information
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
+Once the *=* key is typed, the result will be calculated, and the expression will look like this: 
+    20*160=3200
 
+More advanced expressions are also supported, for example:
+
+    Price with tax: (120+40+60)*1.09=239.8  
+  
 **Enjoy!**
