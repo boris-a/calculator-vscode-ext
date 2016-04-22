@@ -3,28 +3,28 @@
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
 
-// this method is called when your extension is activated
-// your extension is activated the very first time the command is executed
+// This method is called when extension is activated.
+// The extension is activated the very first time the command is executed.
 export function activate(context: vscode.ExtensionContext) {
 
     // Use the console to output diagnostic information (console.log) and errors (console.error)
     // This line of code will only be executed once when your extension is activated
-    console.log('Congratulations, your extension "calc" is now active!');
+    console.log('Extension "calc" was loaded');
 
-    // The command has been defined in the package.json file
-    // Now provide the implementation of the command with  registerCommand
+    var mathExpressionRegex = new RegExp('[0-9,\\+\\-\\*\\/\\^\\.\\(\\)]{1,}');
+
     // The commandId parameter must match the command field in package.json
     let disposable = vscode.commands.registerCommand('extension.calculate', () => {
-        // The code you place here will be executed every time your command is executed
 
         let editor = vscode.window.activeTextEditor;
+        
+        // Get the line at the cursor
         let text = editor.document.lineAt(editor.selection.anchor).text;
         
         var insertText = '=';
         
-        var regexp = new RegExp('[0-9,\\+\\-\\*\\/\\^\\.\\(\\)]{1,}');
-        
-        if(regexp.test(text)) {
+        // Test if the text at the cursor is a math expression                
+        if(mathExpressionRegex.test(text)) {
             try {
                 var insertText = insertText + eval(text).toString();
             } catch (error) {
@@ -32,6 +32,7 @@ export function activate(context: vscode.ExtensionContext) {
             }
         }
         
+        // Insert the result, or just the "=" symbol, since it was swallowed by the key binding
         editor.edit(edit => {
             var pos = new vscode.Position(editor.selection.anchor.line, editor.selection.anchor.character); 
             edit.insert(pos, insertText); 
