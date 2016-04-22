@@ -17,8 +17,25 @@ export function activate(context: vscode.ExtensionContext) {
     let disposable = vscode.commands.registerCommand('extension.calculate', () => {
         // The code you place here will be executed every time your command is executed
 
-        // Display a message box to the user
-        vscode.window.showInformationMessage('Hello World!');
+        let editor = vscode.window.activeTextEditor;
+        let text = editor.document.lineAt(editor.selection.anchor).text;
+        
+        var insertText = '=';
+        
+        var regexp = new RegExp('[0-9,\\+\\-\\*\\/\\^\\.\\(\\)]{1,}');
+        
+        if(regexp.test(text)) {
+            try {
+                var insertText = insertText + eval(text).toString();
+            } catch (error) {
+                // eval failed, ignore                
+            }
+        }
+        
+        editor.edit(edit => {
+            var pos = new vscode.Position(editor.selection.anchor.line, editor.selection.anchor.character); 
+            edit.insert(pos, insertText); 
+        })                 
     });
 
     context.subscriptions.push(disposable);
