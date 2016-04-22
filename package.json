@@ -3,7 +3,7 @@
     "displayName": "calc",
     "description": "Calculates basic math expressions",
     "version": "0.0.1",
-    "publisher": "Microsoft",
+    "publisher": "Boris A.",
     "engines": {
         "vscode": "^1.0.0"
     },
