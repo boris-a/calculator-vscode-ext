@@ -11,20 +11,33 @@ export function activate(context: vscode.ExtensionContext) {
     // This line of code will only be executed once when your extension is activated
     console.log('Extension "calc" was loaded');
 
-    var mathExpressionRegex = new RegExp('[0-9,\\+\\-\\*\\/\\^\\.\\(\\)]{1,}');
+    var calculator = new Caclulator();
 
     // The commandId parameter must match the command field in package.json
     let disposable = vscode.commands.registerCommand('extension.calculate', () => {
-
         let editor = vscode.window.activeTextEditor;
+        calculator.calculateAt(editor, editor.selection.anchor);
+    });
+
+    context.subscriptions.push(disposable);
+}
+
+// this method is called when your extension is deactivated
+export function deactivate() {
+}
+
+export class Caclulator {
+    private mathExpressionRegex = new RegExp('[0-9,\\+\\-\\*\\/\\^\\.\\(\\)]{1,}');
+    
+    public calculateAt(editor: vscode.TextEditor, pos: vscode.Position) : Thenable<boolean> {       
         
         // Get the line at the cursor
-        let text = editor.document.lineAt(editor.selection.anchor).text;
+        let text = editor.document.lineAt(pos).text;
         
         var insertText = '=';
         
         // Test if the text at the cursor is a math expression                
-        if(mathExpressionRegex.test(text)) {
+        if(this.mathExpressionRegex.test(text)) {
             try {
                 var insertText = insertText + eval(text).toString();
             } catch (error) {
@@ -33,15 +46,8 @@ export function activate(context: vscode.ExtensionContext) {
         }
         
         // Insert the result, or just the "=" symbol, since it was swallowed by the key binding
-        editor.edit(edit => {
-            var pos = new vscode.Position(editor.selection.anchor.line, editor.selection.anchor.character); 
+        return editor.edit(edit => {
             edit.insert(pos, insertText); 
         })                 
-    });
-
-    context.subscriptions.push(disposable);
-}
-
-// this method is called when your extension is deactivated
-export function deactivate() {
+    }
 }
